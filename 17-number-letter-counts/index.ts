@@ -1,99 +1,47 @@
-// https://ourcodeworld.com/articles/read/353/how-to-convert-numbers-to-words-number-spelling-in-javascript
-function numberToEnglish(n, custom_join_character) {
+function NumberToWords(number: number): string {
+	if (number == 0)
+		return "zero";
 
-	var string = n.toString(),
-		units, tens, scales, start, end, chunks, chunksLen, chunk, ints, i, word, words;
+	let words = "";
 
-	var and = custom_join_character || 'and';
-
-	/* Is number zero? */
-	if (parseInt(string) === 0) {
-		return 'zero';
+	if (Math.floor(number / 1000000) > 0) {
+		words += NumberToWords(Math.floor(number / 1000000)) + " million ";
+		number %= 1000000;
 	}
 
-	/* Array of units as words */
-	units = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
-
-	/* Array of tens as words */
-	tens = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
-
-	/* Array of scales as words */
-	scales = ['', 'thousand', 'million', 'billion', 'trillion', 'quadrillion', 'quintillion', 'sextillion', 'septillion', 'octillion', 'nonillion', 'decillion', 'undecillion', 'duodecillion', 'tredecillion', 'quatttuor-decillion', 'quindecillion', 'sexdecillion', 'septen-decillion', 'octodecillion', 'novemdecillion', 'vigintillion', 'centillion'];
-
-	/* Split user arguemnt into 3 digit chunks from right to left */
-	start = string.length;
-	chunks = [];
-	while (start > 0) {
-		end = start;
-		chunks.push(string.slice((start = Math.max(0, start - 3)), end));
+	if (Math.floor(number / 1000) > 0) {
+		words += NumberToWords(Math.floor(number / 1000)) + " thousand ";
+		number %= 1000;
 	}
 
-	/* Check if function has enough scale words to be able to stringify the user argument */
-	chunksLen = chunks.length;
-	if (chunksLen > scales.length) {
-		return '';
+	if (Math.floor(number / 100) > 0) {
+		words += NumberToWords(Math.floor(number / 100)) + " hundred ";
+		number %= 100;
 	}
 
-	/* Stringify each integer in each chunk */
-	words = [];
-	for (i = 0; i < chunksLen; i++) {
+	if (number > 0) {
+		if (words != "")
+			words += "and ";
 
-		chunk = parseInt(chunks[i]);
+		const unitsMap = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+		const tensMap = ["zero", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
 
-		if (chunk) {
-
-			/* Split chunk into array of individual integers */
-			ints = chunks[i].split('').reverse().map(parseFloat);
-
-			/* If tens integer is 1, i.e. 10, then add 10 to units integer */
-			if (ints[1] === 1) {
-				ints[0] += 10;
-			}
-
-			/* Add scale word if chunk is not zero and array item exists */
-			if ((word = scales[i])) {
-				words.push(word);
-			}
-
-			/* Add unit word if array item exists */
-			if ((word = units[ints[0]])) {
-				words.push(word);
-			}
-
-			/* Add tens word if array item exists */
-			if ((word = tens[ints[1]])) {
-				words.push(word);
-			}
-
-			/* Add 'and' string after units or tens integer if: */
-			if (ints[0] || ints[1]) {
-
-				/* Chunk has a hundreds integer or chunk is the first of multiple chunks */
-				if (ints[2] || !i && chunksLen) {
-					words.push(and);
-				}
-
-			}
-
-			/* Add hundreds word if array item exists */
-			if ((word = units[ints[2]])) {
-				words.push(word + ' hundred');
-			}
-
+		if (number < 20)
+			words += unitsMap[number];
+		else
+		{
+			words += tensMap[Math.floor(number / 10)];
+			if ((number % 10) > 0)
+				words += "-" + unitsMap[number % 10];
 		}
-
 	}
 
-	return words.reverse().join(' ');
-
+	return words;
 }
 
-const array: string[] = [];
+console.log(NumberToWords(6174));
+let sum = 0;
 for (let i = 1; i <= 1000; i++) {
-	array.push(numberToEnglish(i, 'and'));
-	if (i - 1 < 100) {
-		array[i - 1] = array[i - 1].substring(4);
-	}
+	sum += NumberToWords(i).split(' ').join('').split('-').join('').length;
 }
-console.log(array.map(s => s.split(' ').join('')).join('').length);
-// uncompleted
+console.log(sum);
