@@ -19,6 +19,7 @@ for (let i = 10; i < 10000000; i++) {
 }
 
 console.log(answers);
+// @ts-ignore
 let sum = 0;
 for (const key in answers) {
 	sum += answers[key];

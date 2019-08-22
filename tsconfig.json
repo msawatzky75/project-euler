@@ -2,6 +2,8 @@
 	"compilerOptions": {
 		"experimentalDecorators": true,
 		"allowJs": true,
-		"target": "esnext"
+		"target": "esnext",
+		"resolveJsonModule": true,
+		"esModuleInterop": true
 	}
 }

@@ -25,3 +25,11 @@ export function sumDigits(num: bigint): bigint {
 	}
 	return sum;
 }
+
+export function factorial(num: bigint): bigint {
+	let product: bigint = 1n;
+	for (let i = 1n; i < num; i++) {
+		product *= i;
+	}
+	return product;
+}
