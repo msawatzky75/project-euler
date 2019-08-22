@@ -1,4 +1,3 @@
-// incomplete
 import {sumDigits} from '../lib';
 
-console.log(sumDigits(Math.pow(2, 1000)));
+console.log(sumDigits(2n ** 1000n));
