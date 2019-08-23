@@ -1,3 +1,7 @@
+const uniqueFilter = (val, index, self) => self.indexOf(val) === index;
+const ascSort = (a, b) => a - b;
+const sum = (t, v) => t + v;
+
 export function Array2D<T>(length: number, defaultValue: T | null = null): T[][] {
 	function createArray(value: T | null, length: number) {
 		let array2 = [];
@@ -45,16 +49,21 @@ export function getFactors(num: number): number[] {
 			factors.push(i, num / i);
 		}
 	}
-	return factors.filter((val, index, self) => self.indexOf(val) === index).sort((a, b) => a - b);
+	return factors.filter(uniqueFilter).sort(ascSort);
+}
+
+export function getDivisors(num: number): number[] {
+	const factors = getFactors(num);
+	factors.pop();
+	return factors;
 }
 
 export function sumDivisors(num: number): number {
-	const divisors = getFactors(num);
-	let sum = 0;
-	for (let i = 0; i < divisors.length; i++) {
-		sum += divisors[i];
-	}
-	return sum;
+	return sumArray(getFactors(num));
+}
+
+export function sumArray(arr: number[]) {
+	return arr.reduce(sum);
 }
 
 export function isAmicable(num: number): boolean {
@@ -62,9 +71,9 @@ export function isAmicable(num: number): boolean {
 }
 
 export function isPerfectNumber(num: number): boolean {
-	return getFactors(num).reduce((t, v) => t + v) === num * 2;
+	return sumArray(getDivisors(num)) === num;
 }
 
 export function isAbundantNumber(num: number): boolean {
-	return getFactors(num).reduce((t, v) => t + v) - num > num;
+	return sumArray(getDivisors(num)) > num;
 }
