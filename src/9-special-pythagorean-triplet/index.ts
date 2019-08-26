@@ -11,5 +11,3 @@ function pythagoreanTriplet() {
 }
 
 console.log(pythagoreanTriplet());
-
-

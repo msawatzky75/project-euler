@@ -42,6 +42,12 @@ export function factorial(num: bigint): bigint {
 	return product;
 }
 
+export function getDivisors(num: number): number[] {
+	const factors = getFactors(num);
+	factors.pop();
+	return factors;
+}
+
 export function getFactors(num: number): number[] {
 	let factors: number[] = [];
 	for (let i = 1; i <= Math.sqrt(num); i++) {
@@ -52,10 +58,12 @@ export function getFactors(num: number): number[] {
 	return factors.filter(uniqueFilter).sort(ascSort);
 }
 
-export function getDivisors(num: number): number[] {
-	const factors = getFactors(num);
-	factors.pop();
-	return factors;
+export function getNextPrime(num: number): number {
+	let next = num + 1;
+	while (!isPrime(next)) {
+		next++;
+	}
+	return next;
 }
 
 export function sumDivisors(num: number): number {
