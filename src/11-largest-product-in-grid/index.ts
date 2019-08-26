@@ -36,7 +36,6 @@ function getLargestProduct(grid: number[][], {x, y}: {x: number, y: number}, pro
 	if (y + productChainLength < grid[x].length) {
 		temp = getProduct(grid, {x, y}, productChainLength, Direction.none, Direction.down);
 		largest = temp > largest ? temp : largest;
-		console.log('none down', {x, y, temp});
 	}
 
 	if (x + productChainLength < grid.length) {
@@ -60,7 +59,6 @@ for (let y = 0; y < grid.length; y++) {
 	for (let x = 0; x < grid[y].length; x++) {
 		let temp = getLargestProduct(grid, {x, y}, 4);
 		largest = temp > largest ? temp : largest;
-		// console.log(largest);
 	}
 }
 

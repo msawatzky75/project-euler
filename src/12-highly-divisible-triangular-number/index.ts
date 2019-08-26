@@ -1,4 +1,3 @@
-// solved
 function countDivisors(num: number): number {
 	let count = 0;
 	for (let i = 1; i <= Math.sqrt(num); i++) {
