@@ -1,3 +1,5 @@
+import { memoize } from "lodash";
+
 const uniqueFilter = (val, index, self) => self.indexOf(val) === index;
 const ascSort = (a, b) => a - b;
 const sum = (t, v) => t + v;
@@ -10,11 +12,11 @@ export function Array2D<T>(length: number, defaultValue: T | null = null): T[][]
 		}
 		return array2;
 	}
-		let array = [];
-		for (let i = 0; i < length; i++) {
-			array.push(createArray(defaultValue, length));
-		}
-		return array;
+	let array = [];
+	for (let i = 0; i < length; i++) {
+		array.push(createArray(defaultValue, length));
+	}
+	return array;
 }
 
 export function removeFirstNum(num: bigint): bigint {
@@ -22,9 +24,9 @@ export function removeFirstNum(num: bigint): bigint {
 	return num - magnitude;
 }
 
-export function isPrime(num: number): boolean {
+export const isPrime = memoize(function (num: number): boolean {
 	return getFactors(num).length === 2;
-}
+});
 
 export function sumDigits(num: bigint): bigint {
 	let sum: bigint = 0n;
@@ -42,11 +44,11 @@ export function factorial(num: bigint): bigint {
 	return product;
 }
 
-export function getDivisors(num: number): number[] {
+export const getProperDivisors = memoize(function (num: number): number[] {
 	const factors = getFactors(num);
 	factors.pop();
 	return factors;
-}
+});
 
 export function getFactors(num: number): number[] {
 	let factors: number[] = [];
@@ -66,22 +68,23 @@ export function getNextPrime(num: number): number {
 	return next;
 }
 
-export function sumDivisors(num: number): number {
+export const sumDivisors = memoize(function (num: number): number {
 	return sumArray(getFactors(num));
-}
+});
 
-export function sumArray(arr: number[]) {
+export const sumArray = memoize(function (arr: number[]) {
+	if (!arr.length) return NaN;
 	return arr.reduce(sum);
-}
+});
 
-export function isAmicable(num: number): boolean {
+export const isAmicable = memoize(function (num: number): boolean {
 	return sumDivisors(sumDivisors(num)) === num && sumDivisors(num) !== num;
-}
+});
 
-export function isPerfectNumber(num: number): boolean {
-	return sumArray(getDivisors(num)) === num;
-}
+export const isPerfectNumber = memoize(function (num: number): boolean {
+	return sumArray(getProperDivisors(num)) === num;
+});
 
-export function isAbundantNumber(num: number): boolean {
-	return sumArray(getDivisors(num)) > num;
-}
+export const isAbundantNumber = memoize(function (num: number): boolean {
+	return sumArray(getProperDivisors(num)) > num;
+});

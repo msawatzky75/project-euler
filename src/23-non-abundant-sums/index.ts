@@ -1,27 +1,26 @@
-import {getDivisors, isAbundantNumber, sumArray} from '../lib';
+import { memoize } from "lodash";
+import { getProperDivisors, isAbundantNumber, sumArray } from "../lib";
 
-function isAbundantSummable(abundantNums, num): boolean {
-	const wNums = abundantNums.filter(v => v <= num / 2);
-	for(let i = 0; i < wNums.length; i++) {
-		if (wNums.find(v => v === num - wNums[i]) !== undefined) {
-			return true;
-		} else if (isAbundantSummable(abundantNums, num - wNums[i])) {
-			return true;
+const isAbundant = memoize(isAbundantNumber);
+/*
+ * Returns true if the number is a sum of two abundant numbers.
+ */
+function isAbundantSummable(num: number): false | [number, number] {
+	const result = false;
+	for (let i = 1; i <= num / 2; i++) {
+		if (isAbundant(i) && isAbundant(num - i)) {
+			return [i, num - i];
 		}
 	}
-	return false;
+	return result;
 }
 
-const abundantNums = [];
-const notAbundantSum = [];
-for (let i = 12; i <= 28123; i++) {
-	if (isAbundantNumber(i)) {
-		abundantNums.push(i);
+const nonAbundantSummable = [];
+for (let i = 0; i <= 28123 + 1; i++) {
+	if (!isAbundantSummable(i)) {
+		nonAbundantSummable.push(i);
 	}
-	// if (!isAbundantSummable(abundantNums, i)) {
-	// 	notAbundantSum.push(i);
-	// }
 }
 
-console.log(isAbundantSummable(abundantNums, 96), isAbundantNumber(96), getDivisors(96), sumArray(getDivisors(96)));
-// console.log(sumArray(notAbundantSum));
+console.log(nonAbundantSummable);
+console.log(sumArray(nonAbundantSummable));
